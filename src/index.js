@@ -8,11 +8,16 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 io.on('connection', (socket) => {
-    console.log('a user connected');
+    console.log('a user connected',socket.id);
+    socket.on('msgSend',(data)=>{
+        console.log(data);
+        io.emit('msgRcvd',data)
+    })
 });
 
 app.use('/',express.static(__dirname + '/public/'))
 
 server.listen(PORT,()=>{
+    
     console.log(`App running on ${PORT}`);
 });
